@@ -7,11 +7,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class BallIntakeCommand extends Command {
+public class CameraCommand extends Command {
 
-    public BallIntakeCommand() {
+    public CameraCommand() {
         // Use requires() here to declare subsystem dependencies
-         requires(Robot.ballIntake);
+        // requires(Robot.camera);
     }
 
     // Called just before this Command runs the first time
@@ -20,9 +20,7 @@ public class BallIntakeCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//double power = -Robot.oi.operator.getRawAxis(5);
-    	double power = -Robot.oi.operator.getRightJoyY();
-    	Robot.ballIntake.setPower(power);
+    	// Robot.camera.pushImage();
     }
 
     // Make this return true when this Command no longer needs to run execute()

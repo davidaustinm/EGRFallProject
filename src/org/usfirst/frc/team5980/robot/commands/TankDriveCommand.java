@@ -1,6 +1,8 @@
 package org.usfirst.frc.team5980.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team5980.robot.*;
 
 /**
@@ -16,12 +18,24 @@ public class TankDriveCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     }
+    
+    public double deadBand(double x){
+    	if (Math.abs(x)<.2){
+    		return 0;
+    	}else{
+    		return x;
+    	}
+    }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double leftPower = -Robot.oi.driver.getRawAxis(1);
-    	double rightPower = -Robot.oi.driver.getRawAxis(5);
+    	//double leftPower = -Robot.oi.driver.getRawAxis(1);
+    	//double rightPower = -Robot.oi.driver.getRawAxis(5);
+    	double leftPower = deadBand(-Robot.oi.driver.getLeftJoyY());
+    	double rightPower = deadBand(-Robot.oi.driver.getRightJoyY());
     	Robot.driveTrain.setPower(leftPower,  rightPower);
+    	SmartDashboard.putNumber("left:", leftPower);
+    	SmartDashboard.putNumber("right:", rightPower);
     	
     }
 

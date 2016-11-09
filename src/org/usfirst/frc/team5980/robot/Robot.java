@@ -22,6 +22,8 @@ public class Robot extends IterativeRobot {
 	public static final DriveTrain driveTrain = new DriveTrain();
 	public static OI oi;
 	public static final BallIntake ballIntake = new BallIntake();
+	//public static final Camera camera = new Camera();
+	public static final Sensors sensors = new Sensors();
     Command autonomousCommand;
     SendableChooser chooser;
 
@@ -74,6 +76,7 @@ public class Robot extends IterativeRobot {
 		} */
     	
     	// schedule the autonomous command (example)
+        autonomousCommand = new DriveForwardForDistance(5000, 0.5);
         if (autonomousCommand != null) autonomousCommand.start();
     }
 
@@ -82,6 +85,8 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+    	SmartDashboard.putNumber("right", sensors.getRightEncoder()); 
+        SmartDashboard.putNumber("getYaw", sensors.getYaw());   	
     }
 
     public void teleopInit() {
@@ -96,7 +101,10 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+    	SmartDashboard.putNumber("left", sensors.getLeftEncoder());
+    	SmartDashboard.putNumber("right", sensors.getRightEncoder());
         Scheduler.getInstance().run();
+        SmartDashboard.putNumber("getYaw", sensors.getYaw());
     }
     
     /**

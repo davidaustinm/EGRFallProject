@@ -20,7 +20,7 @@ public class CameraCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	// Robot.camera.pushImage();
+    	Robot.camera.pushImage();
     }
 
     // Make this return true when this Command no longer needs to run execute()

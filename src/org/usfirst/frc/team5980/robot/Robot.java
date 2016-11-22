@@ -22,10 +22,12 @@ public class Robot extends IterativeRobot {
 	public static final DriveTrain driveTrain = new DriveTrain();
 	public static OI oi;
 	public static final BallIntake ballIntake = new BallIntake();
-	//public static final Camera camera = new Camera();
+	public static final Camera camera = new Camera();
 	public static final Sensors sensors = new Sensors();
     Command autonomousCommand;
     SendableChooser chooser;
+    long cameraStartTime;
+    boolean cameraStarted = false;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -37,6 +39,7 @@ public class Robot extends IterativeRobot {
         chooser.addDefault("Default Auto", new ExampleCommand());
 //        chooser.addObject("My Auto", new MyAutoCommand());
         SmartDashboard.putData("Auto mode", chooser);
+        cameraStartTime = System.currentTimeMillis() + 3000;
     }
 	
 	/**
@@ -50,6 +53,14 @@ public class Robot extends IterativeRobot {
 	
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		/*
+		if (cameraStarted == false && System.currentTimeMillis() >= cameraStartTime) {
+			
+			cameraStarted = true;
+			(new CameraCommand()).start();
+		}
+		SmartDashboard.putBoolean("Camera Started", cameraStarted);
+		*/
 	}
 
 	/**
@@ -95,6 +106,7 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+        (new CameraCommand()).start();
     }
 
     /**

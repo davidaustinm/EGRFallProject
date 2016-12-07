@@ -28,6 +28,7 @@ public class Robot extends IterativeRobot {
     SendableChooser chooser;
     long cameraStartTime;
     boolean cameraStarted = false;
+    CameraCommand cameraCommand = null;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -87,7 +88,14 @@ public class Robot extends IterativeRobot {
 		} */
     	
     	// schedule the autonomous command (example)
-        autonomousCommand = new DriveForwardForDistance(5000, 0.5);
+        if (cameraCommand == null) {
+        	cameraCommand = new CameraCommand();
+        	
+        }
+        cameraCommand.start();
+        sensors.resetPosition();
+        //autonomousCommand = new AlignAndDriveToTarget();
+        autonomousCommand = new AlignAndDriveToTarget();
         if (autonomousCommand != null) autonomousCommand.start();
     }
 
@@ -96,6 +104,7 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+        sensors.updatePosition();
     	SmartDashboard.putNumber("right", sensors.getRightEncoder()); 
         SmartDashboard.putNumber("getYaw", sensors.getYaw());   	
     }
@@ -105,8 +114,14 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
+    	if (cameraCommand == null) {
+        	cameraCommand = new CameraCommand();
+        	
+        }
+    	sensors.resetPosition();
+    	cameraCommand.start();
         if (autonomousCommand != null) autonomousCommand.cancel();
-        (new CameraCommand()).start();
+        
     }
 
     /**
@@ -117,6 +132,9 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("right", sensors.getRightEncoder());
         Scheduler.getInstance().run();
         SmartDashboard.putNumber("getYaw", sensors.getYaw());
+        sensors.updatePosition();
+        SmartDashboard.putNumber("Coordinate X: ", sensors.getX());
+        SmartDashboard.putNumber("Coordinate Y: ", sensors.getY());
     }
     
     /**
